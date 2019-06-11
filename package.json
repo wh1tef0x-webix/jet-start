@@ -24,6 +24,8 @@
     "babel-loader": "^8.0.6",
     "css-loader": "^3.0.0",
     "eslint": "^5.16.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-xbsoftware": "git+https://bitbucket.org/xbsltd/eslint.git",
     "file-loader": "^4.0.0",
     "less": "^3.9.0",
     "less-loader": "^5.0.0",
