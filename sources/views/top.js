@@ -16,7 +16,7 @@ export default class TopView extends JetView {
 			template: "<span class='webix_icon #icon#'></span> #value# ",
 			data: [
 				{value: "Dashboard", id: "start", icon: "wxi-columns"},
-				{value: "Data",		 id: "data", icon: "wxi-pencil"}
+				{value: "Data", id: "data", icon: "wxi-pencil"}
 			]
 		};
 
@@ -25,18 +25,25 @@ export default class TopView extends JetView {
 			paddingX: 5,
 			css: "app_layout",
 			cols: [
-				{paddingX: 5, paddingY: 10, rows: [{css: "webix_shadow_medium", rows: [header, menu]}]},
-				{type: "wide",
+				{
+					paddingX: 5,
+					paddingY: 10,
+					rows: [{css: "webix_shadow_medium", rows: [header, menu]}]
+				},
+				{
+					type: "wide",
 					paddingY: 10,
 					paddingX: 5,
 					rows: [
 						{$subview: true}
-					]}
+					]
+				}
 			]
 		};
 
 		return ui;
 	}
+
 	init() {
 		this.use(plugins.Menu, "top:menu");
 	}
