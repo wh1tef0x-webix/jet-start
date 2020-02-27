@@ -14,7 +14,8 @@
   "rules": {
     "import/prefer-default-export": "off",
     "class-methods-use-this": "off",
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+    "no-param-reassign": "off"
   },
   "parserOptions": {
     "ecmaVersion": 2018,
