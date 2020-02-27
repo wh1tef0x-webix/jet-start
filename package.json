@@ -8,6 +8,7 @@
     "lint": "eslint sources/",
     "build": "webpack --env.production true",
     "module": "webpack --env.production true --env.module true",
+    "precommit": "lint-staged",
     "standalone": "webpack --env.production true --env.module true --env.standalone true",
     "start": "webpack-dev-server --open"
   },
@@ -16,6 +17,12 @@
     "jet"
   ],
   "license": "MIT",
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/plugin-proposal-object-rest-spread": "^7.8.3",
@@ -27,8 +34,10 @@
     "eslint-plugin-import": "^2.20.1",
     "eslint-xbsoftware": "git+https://bitbucket.org/xbsltd/eslint.git",
     "file-loader": "^5.1.0",
+    "husky": "^4.2.3",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
+    "lint-staged": "^10.0.8",
     "mini-css-extract-plugin": "^0.9.0",
     "url-loader": "^3.0.0",
     "webpack": "^4.41.6",
