@@ -1,4 +1,4 @@
-export const data = new webix.DataCollection({
+const data = new webix.DataCollection({
 	data: [
 		{id: 1, title: "The Shawshank Redemption", year: 1994, votes: 678790, rating: 9.2, rank: 1},
 		{id: 2, title: "The Godfather", year: 1972, votes: 511495, rating: 9.2, rank: 2},
@@ -15,3 +15,5 @@ export const data = new webix.DataCollection({
 		{id: 6, title: "12 Angry Men", year: 1957, votes: 164558, rating: 8.9, rank: 6}
 	]
 });
+
+export default data;

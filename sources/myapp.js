@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {JetApp, EmptyRouter, HashRouter} from "webix-jet";
 import "./styles/app.css";
 
