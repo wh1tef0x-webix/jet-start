@@ -1,5 +1,5 @@
-const xbsEslint = require('eslint-config-xbsoftware');
-const {INDENT, QUOTES, PLUGINS} = require('eslint-config-xbsoftware/constants');
+const xbsEslint = require("eslint-config-xbsoftware");
+const {INDENT, QUOTES, PLUGINS} = require("eslint-config-xbsoftware/constants");
 
 module.exports = {
 	extends: [
@@ -14,6 +14,11 @@ module.exports = {
 		})
 	],
 	globals: {
-		webix: "readonly"
+		webix: "readonly",
+		require: "readonly"
+	},
+	env: {
+		browser: true,
+		node: true
 	}
 };
