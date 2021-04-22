@@ -1,5 +1,9 @@
 const xbsEslint = require("eslint-config-xbsoftware");
-const {INDENT, QUOTES, PLUGINS} = require("eslint-config-xbsoftware/constants");
+const {
+	INDENT,
+	QUOTES,
+	PLUGINS
+} = require("eslint-config-xbsoftware/constants");
 
 module.exports = {
 	extends: [
