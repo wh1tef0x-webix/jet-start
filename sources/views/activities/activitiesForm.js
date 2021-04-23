@@ -57,7 +57,7 @@ export default class ActivitiesPopup extends JetView {
 								options: {
 									data: contacts,
 									body: {
-										template: "#FullName#"
+										template: obj => `${obj.FirstName} ${obj.LastName}`
 									}
 								}
 							},
@@ -68,6 +68,9 @@ export default class ActivitiesPopup extends JetView {
 										view: "datepicker",
 										label: _("activitiestable_date"),
 										type: "date",
+										validate: webix.rules.isNotEmpty,
+										validateEvent: "key",
+										invalidMessage: _("form_validate_not_empty"),
 										format: webix.Date.dateToStr("%Y-%m-%d"),
 										stringResult: true
 									},
@@ -76,6 +79,9 @@ export default class ActivitiesPopup extends JetView {
 										view: "datepicker",
 										label: _("activitiestable_time"),
 										type: "time",
+										validate: webix.rules.isNotEmpty,
+										validateEvent: "key",
+										invalidMessage: _("form_validate_not_empty"),
 										format: webix.Date.dateToStr("%H:%i"),
 										stringResult: true
 									}
@@ -119,12 +125,10 @@ export default class ActivitiesPopup extends JetView {
 		};
 	}
 
-	init() {
-		this.$$(FORM_ID)
-			.bind(activities);
-	}
-
 	hideWindow() {
+		const form = this.$$(FORM_ID);
+		form.clear();
+		form.clearValidation();
 		this.getRoot()
 			.hide();
 	}
@@ -136,12 +140,10 @@ export default class ActivitiesPopup extends JetView {
 				.setValue(_("form_label_edit"));
 			this.$$(SAVEBTN_ID)
 				.define("label", _("btn_save"));
-			activities.setCursor(id);
-		}
-		else {
-			const form = this.$$(FORM_ID);
-			form.clear();
-			form.clearValidation();
+			activities.waitData.then(() => {
+				this.$$(FORM_ID)
+					.setValues(activities.getItem(id));
+			});
 		}
 		this.getRoot()
 			.show();

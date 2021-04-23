@@ -1,17 +1,25 @@
+const dateToStrParser = webix.Date.dateToStr("%Y-%m-%d");
+const timeToStrParser = webix.Date.dateToStr("%H:%i");
+
+const strToDateParser = webix.Date.strToDate("%Y-%m-%d");
+const strToTimeParser = webix.Date.strToDate("%H:%i");
+
 const activities = new webix.DataCollection({
 	url: "http://localhost:8096/api/v1/activities/",
 	save: "rest->http://localhost:8096/api/v1/activities/",
 	scheme: {
 		$init: (obj) => {
-			obj.DueDate = {
-				date: webix.Date.dateToStr("%Y-%m-%d")(obj.DueDate),
-				time: webix.Date.dateToStr("%H:%i")(obj.DueDate)
-			};
+			if (typeof obj.DueDate === "string") {
+				obj.DueDate = {
+					date: dateToStrParser(obj.DueDate),
+					time: timeToStrParser(obj.DueDate)
+				};
+			}
 		},
 		$save: (obj) => {
-			const date = webix.Date.strToDate("%Y-%m-%d")(obj.DueDate.date);
-			const time = webix.Date.strToDate("%H:%i")(obj.DueDate.time);
-			obj.DueDate = `${webix.Date.dateToStr("%Y-%m-%d")(date)} ${webix.Date.dateToStr("%H:%i")(time)}`;
+			const date = strToDateParser(obj.DueDate.date);
+			const time = strToTimeParser(obj.DueDate.time);
+			obj.DueDate = `${dateToStrParser(date)} ${timeToStrParser(time)}`;
 		}
 	}
 });

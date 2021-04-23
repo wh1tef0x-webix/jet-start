@@ -1,8 +1,8 @@
 import {JetView} from "webix-jet";
 
+import * as picture from "../../images/blank-avatar.png";
 import contacts from "../../models/contacts";
 import ContactView from "./contactsInfo";
-
 import "../../styles/contacts.css";
 
 const LIST_ID = "contacts:list";
@@ -51,12 +51,12 @@ export default class ContactsView extends JetView {
 
 	listTemplate(obj) {
 		return `<div class="list_item">
-                <img alt="${obj.FirstName} ${obj.LastName} photo" src=${obj.Photo} class="list_item__avatar">
+                <img alt="${obj.FirstName} ${obj.LastName} photo" src=${obj.Photo ? obj.Photo : picture.default} class="list_item__avatar">
 		        <div class="list_item__info"><span>${obj.FirstName} ${obj.LastName}</span><span>${obj.Company}</span></div>
 	        </div>`;
 	}
 
 	onAfterListSelect(id) {
-		this.setParam("id", id, true);
+		this.$scope.setParam("id", id, true);
 	}
 }

@@ -57,7 +57,7 @@ export default class ContactsInfo extends JetView {
 			.then(() => {
 				const contact = contacts.getItem(this.getParam("id", false));
 				this.$$(NAME_ID)
-					.setValue(contact.FullName);
+					.setValue(`${contact.FirstName} ${contact.LastName}`);
 				this.$$(TEMPLATE_ID)
 					.define("template", this.getTemplate(contact));
 				this.$$(TEMPLATE_ID)
@@ -76,7 +76,7 @@ export default class ContactsInfo extends JetView {
 
 	getPhotoHTML(contact) {
 		const _ = this.app.getService("locale")._;
-		const photo = contact ? contact.Photo : picture.default;
+		const photo = (contact && contact.Photo) ? contact.Photo : picture.default;
 		const status = contact && statuses && statuses.getItem(contact.StatusID)
 			? `<span class="contact_info__status"><span class="webix_icon wxi-${statuses.getItem(contact.StatusID).Icon}"></span>${statuses.getItem(contact.StatusID).Value}</span>`
 			: `<span class="contact_info__status">${_("template_loading")}</span>`;
@@ -132,7 +132,7 @@ export default class ContactsInfo extends JetView {
 			}, {});
 		}
 		return fields.reduce((result, current) => {
-			result[current.toLowerCase()] = `<span><span class="webix_icon mdi ${iconsMap[current]}"></span> ${contact[current]}</span>`;
+			result[current.toLowerCase()] = `<span><span class="webix_icon mdi ${iconsMap[current]}"></span> ${contact[current] ? contact[current] : "-"}</span>`;
 			return result;
 		}, {});
 	}
