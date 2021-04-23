@@ -4,7 +4,6 @@ let webpack = require("webpack");
 module.exports = function (env) {
 	let pack = require("./package.json");
 	let MiniCssExtractPlugin = require("mini-css-extract-plugin");
-
 	let production = !!(env && env.production === "true");
 	let asmodule = !!(env && env.module === "true");
 	let standalone = !!(env && env.standalone === "true");
@@ -16,11 +15,11 @@ module.exports = function (env) {
 	let config = {
 		mode: production ? "production" : "development",
 		entry: {
-			myapp: "./sources/myapp.js"
+			main: "./sources/app.js"
 		},
 		output: {
-			path: path.join(__dirname, "codebase"),
-			publicPath: "/codebase/",
+			path: path.join(__dirname, "build"),
+			publicPath: "/build/",
 			filename: "[name].js",
 			chunkFilename: "[name].bundle.js"
 		},
@@ -43,7 +42,7 @@ module.exports = function (env) {
 		stats: "minimal",
 		resolve: {
 			extensions: [".js"],
-			modules: ["./sources", "node_modules"],
+			modules: ["./sources", "./webix", "node_modules"],
 			alias: {
 				"jet-views": path.resolve(__dirname, "sources/views"),
 				"jet-locales": path.resolve(__dirname, "sources/locales")

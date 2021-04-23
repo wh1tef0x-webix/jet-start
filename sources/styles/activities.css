@@ -1,0 +1,8 @@
+.activities__table .webix_el_datepicker .wxi-calendar, .activities__table .webix_el_richselect .wxi-menu-down {
+  background: transparent;
+}
+.activities__table .webix_column :nth-child(2n) {
+  background: rgba(244, 245, 249, 0.6);
+}
+
+/*# sourceMappingURL=activities.css.map */

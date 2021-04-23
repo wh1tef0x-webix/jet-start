@@ -1,5 +1,8 @@
 .idea/
+.editorconfig
 codebase/
+build/
+dist/
 node_modules/
 *.log
-dist/
+test-server/

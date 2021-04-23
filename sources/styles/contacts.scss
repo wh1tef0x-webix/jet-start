@@ -1,0 +1,70 @@
+@import "colors";
+
+.contacts {
+	.list_item {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		height: 100%;
+
+		&__avatar {
+			border-radius: 50%;
+			max-height: 75%;
+			margin-right: 10px;
+			border: 1px $accent-color solid;
+		}
+
+		&__info {
+			height: 100%;
+
+			span {
+				display: block;
+				height: 30%;
+			}
+
+			span:first-child {
+				font-weight: bold;
+				color: $accent-color;
+			}
+		}
+	}
+
+	.contact_info {
+		&__name {
+			padding: 0 30px;
+		}
+
+		&__toolbar {
+			padding: 10px 0;
+		}
+
+		&__template {
+			display: flex;
+			flex-direction: row;
+		}
+
+		&__column {
+			display: flex;
+			flex-direction: column;
+
+			&.image_column {
+				align-items: center;
+			}
+
+			.contact_info__image {
+				max-width: 90%;
+				max-height: 90%;
+			}
+
+			.contact_info__status {
+				padding-top: 10px;
+				font-size: 16px;
+			}
+
+			> span, > span span {
+				padding: 4px;
+				vertical-align: middle;
+			}
+		}
+	}
+}
