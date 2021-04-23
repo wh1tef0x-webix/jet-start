@@ -6,6 +6,7 @@ import contacts from "../../models/contacts";
 import ActivitiesPopup from "./activitiesForm";
 
 const TABLE_ID = "activitiestable:table";
+const EMPTY_SELECT = "$webix_empty";
 
 export default class ActivitiesTable extends JetView {
 	config() {
@@ -50,7 +51,7 @@ export default class ActivitiesTable extends JetView {
 							inputConfig: {
 								suggest: {
 									body: {
-										template: obj => (obj.id === "$webix_empty" ? "" : activityTypes.getItem(obj.id).Value)
+										template: obj => (obj.id === EMPTY_SELECT ? "" : activityTypes.getItem(obj.id).Value)
 									}
 								}
 							}
@@ -91,7 +92,7 @@ export default class ActivitiesTable extends JetView {
 							inputConfig: {
 								suggest: {
 									body: {
-										template: obj => (obj.id === "$webix_empty" ? "" : contacts.getItem(obj.id).FullName)
+										template: obj => (obj.id === EMPTY_SELECT ? "" : contacts.getItem(obj.id).FullName)
 									}
 								}
 							}

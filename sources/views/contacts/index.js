@@ -2,7 +2,6 @@ import {JetView} from "webix-jet";
 
 import contacts from "../../models/contacts";
 import ContactView from "./contactsInfo";
-import contactsList from "./contactsList";
 
 import "../../styles/contacts.css";
 
@@ -10,11 +9,23 @@ const LIST_ID = "contacts:list";
 
 export default class ContactsView extends JetView {
 	config() {
-		const list = contactsList(LIST_ID);
 		return {
 			css: "contacts",
 			cols: [
-				list,
+				{
+					localId: LIST_ID,
+					view: "list",
+					gravity: 0.4,
+					autowidth: true,
+					select: true,
+					template: obj => this.listTemplate(obj),
+					type: {
+						height: 50
+					},
+					on: {
+						onAfterSelect: this.onAfterListSelect
+					}
+				},
 				{$subview: ContactView}
 			]
 		};
@@ -36,5 +47,16 @@ export default class ContactsView extends JetView {
 				list.unselectAll();
 			}
 		});
+	}
+
+	listTemplate(obj) {
+		return `<div class="list_item">
+                <img alt="${obj.FirstName} ${obj.LastName} photo" src=${obj.Photo} class="list_item__avatar">
+		        <div class="list_item__info"><span>${obj.FirstName} ${obj.LastName}</span><span>${obj.Company}</span></div>
+	        </div>`;
+	}
+
+	onAfterListSelect(id) {
+		this.setParam("id", id, true);
 	}
 }

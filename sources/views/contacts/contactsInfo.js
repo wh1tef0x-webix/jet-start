@@ -66,7 +66,27 @@ export default class ContactsInfo extends JetView {
 	}
 
 	getTemplate(contact) {
+		const photoBlock = this.getPhotoHTML(contact);
+		const {
+			firstColumn,
+			secondColumn
+		} = this.getInfoColumnsHTML(contact);
+		return `<div class="contact_info__template">${photoBlock}${firstColumn}${secondColumn}</div>`;
+	}
+
+	getPhotoHTML(contact) {
 		const _ = this.app.getService("locale")._;
+		const photo = contact ? contact.Photo : picture.default;
+		const status = contact && statuses && statuses.getItem(contact.StatusID)
+			? `<span class="contact_info__status"><span class="webix_icon wxi-${statuses.getItem(contact.StatusID).Icon}"></span>${statuses.getItem(contact.StatusID).Value}</span>`
+			: `<span class="contact_info__status">${_("template_loading")}</span>`;
+		return `<div class="contact_info__column image_column">
+                	<img class="contact_info__image" src="${photo}" alt="Contact photo"/>
+                    ${status}
+               	</div>`;
+	}
+
+	getInfoColumnsHTML(contact) {
 		const {
 			email,
 			skype,
@@ -75,14 +95,6 @@ export default class ContactsInfo extends JetView {
 			birthday,
 			address
 		} = this.getFields(contact);
-		const photo = contact ? contact.Photo : picture.default;
-		const status = contact && statuses && statuses.getItem(contact.StatusID)
-			? `<span class="contact_info__status"><span class="webix_icon wxi-${statuses.getItem(contact.StatusID).Icon}"></span>${statuses.getItem(contact.StatusID).Value}</span>`
-			: `<span class="contact_info__status">${_("template_loading")}</span>`;
-		const photoBlock = `<div class="contact_info__column image_column">
-                                <img class="contact_info__image" src="${photo}" alt="Contact photo"/>
-                                ${status}
-                            </div>`;
 		const firstColumn = `<div class="contact_info__column">
                                 ${email}
                                 ${skype}
@@ -93,7 +105,10 @@ export default class ContactsInfo extends JetView {
                                 ${birthday}
                                 ${address}
                              </div>`;
-		return `<div class="contact_info__template">${photoBlock}${firstColumn}${secondColumn}</div>`;
+		return {
+			firstColumn,
+			secondColumn
+		};
 	}
 
 	getFields(contact) {

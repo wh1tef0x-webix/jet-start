@@ -101,20 +101,7 @@ export default class ActivitiesPopup extends JetView {
 									view: "button",
 									label: _("btn_add"),
 									css: "webix_primary",
-									click: () => {
-										const form = this.$$(FORM_ID);
-										const values = form.getValues();
-
-										if (form.validate() && form.isDirty()) {
-											if (values.id) {
-												activities.updateItem(values.id, values);
-											}
-											else {
-												activities.add(values);
-											}
-											this.hideWindow();
-										}
-									}
+									click: () => this.btnAddClick()
 								},
 								{
 									gravity: 0.25,
@@ -157,5 +144,20 @@ export default class ActivitiesPopup extends JetView {
 		}
 		this.getRoot()
 			.show();
+	}
+
+	btnAddClick() {
+		const form = this.$$(FORM_ID);
+		const values = form.getValues();
+
+		if (form.validate() && form.isDirty()) {
+			if (values.id) {
+				activities.updateItem(values.id, values);
+			}
+			else {
+				activities.add(values);
+			}
+			this.hideWindow();
+		}
 	}
 }
