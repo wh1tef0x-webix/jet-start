@@ -68,14 +68,17 @@ export default class ActivitiesTable extends JetView {
 						_("activitiestable_date"),
 						{
 							content: "datepickerFilter",
+							compare(cellValue, filterValue) {
+								return cellValue.date === webix.Date.dateToStr("%Y-%m-%d")(filterValue);
+							},
 							inputConfig: {
 								format: webix.Date.dateToStr("%d %M %Y")
 							}
 						}
 					],
 					fillspace: 1,
-					sort: "int",
-					format: webix.Date.dateToStr("%d %M %Y")
+					sort: "string",
+					format: obj => webix.Date.dateToStr("%d %M %Y")(obj.date)
 				},
 				{
 					id: "Details",

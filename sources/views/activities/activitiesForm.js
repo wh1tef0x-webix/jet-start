@@ -26,6 +26,7 @@ export default class ActivitiesPopup extends JetView {
 					{
 						localId: FORM_ID,
 						view: "form",
+						complexData: true,
 						elements: [
 							{
 								name: "Details",
@@ -63,7 +64,7 @@ export default class ActivitiesPopup extends JetView {
 							{
 								cols: [
 									{
-										name: "DueDate_date",
+										name: "DueDate.date",
 										view: "datepicker",
 										label: _("activitiestable_date"),
 										type: "date",
@@ -71,7 +72,7 @@ export default class ActivitiesPopup extends JetView {
 										stringResult: true
 									},
 									{
-										name: "DueDate_time",
+										name: "DueDate.time",
 										view: "datepicker",
 										label: _("activitiestable_time"),
 										type: "time",
@@ -149,7 +150,6 @@ export default class ActivitiesPopup extends JetView {
 	btnAddClick() {
 		const form = this.$$(FORM_ID);
 		const values = form.getValues();
-
 		if (form.validate() && form.isDirty()) {
 			if (values.id) {
 				activities.updateItem(values.id, values);
