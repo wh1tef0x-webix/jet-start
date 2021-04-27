@@ -1,0 +1,12 @@
+.contact_form .contact_form__header > div {
+  font-size: x-large;
+}
+.contact_form .icons_selector .webix_icon {
+  vertical-align: text-top;
+}
+.contact_form__photo {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/*# sourceMappingURL=contact_form.css.map */

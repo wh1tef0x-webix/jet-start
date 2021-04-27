@@ -1,15 +1,13 @@
 @import "colors";
 
-.activities {
-	&__table {
-		.webix_el_datepicker .wxi-calendar, .webix_el_richselect .wxi-menu-down {
-			background: transparent;
-		}
+.table_view {
+	.webix_el_datepicker .wxi-calendar, .webix_el_richselect .wxi-menu-down {
+		background: transparent;
+	}
 
-		.webix_column {
-			:nth-child(2n) {
-				background: rgb($table-background, 0.6);
-			}
+	.webix_column {
+		:nth-child(2n) {
+			background: rgb($table-background, 0.6);
 		}
 	}
 }

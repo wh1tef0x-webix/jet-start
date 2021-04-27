@@ -1,7 +1,7 @@
-.activities__table .webix_el_datepicker .wxi-calendar, .activities__table .webix_el_richselect .wxi-menu-down {
+.table_view .webix_el_datepicker .wxi-calendar, .table_view .webix_el_richselect .wxi-menu-down {
   background: transparent;
 }
-.activities__table .webix_column :nth-child(2n) {
+.table_view .webix_column :nth-child(2n) {
   background: rgba(244, 245, 249, 0.6);
 }
 

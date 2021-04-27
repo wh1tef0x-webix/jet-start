@@ -2,31 +2,44 @@ import {JetView} from "webix-jet";
 
 import * as picture from "../../images/blank-avatar.png";
 import contacts from "../../models/contacts";
-import ContactView from "./contactsInfo";
 import "../../styles/contacts.css";
 
 const LIST_ID = "contacts:list";
 
 export default class ContactsView extends JetView {
 	config() {
+		const _ = this.app.getService("locale")._;
 		return {
 			css: "contacts",
 			cols: [
 				{
-					localId: LIST_ID,
-					view: "list",
 					gravity: 0.4,
-					autowidth: true,
-					select: true,
-					template: obj => this.listTemplate(obj),
-					type: {
-						height: 50
-					},
-					on: {
-						onAfterSelect: this.onAfterListSelect
-					}
+					rows: [
+						{
+							localId: LIST_ID,
+							view: "list",
+							autowidth: true,
+							select: true,
+							template: obj => this.listTemplate(obj),
+							type: {
+								height: 50
+							},
+							on: {
+								onAfterSelect: this.onAfterListSelect.bind(this)
+							}
+						},
+						{
+							view: "button",
+							label: _("btn_add_contact"),
+							type: "icon",
+							icon: "wxi-plus-circle",
+							click: this.addContactClick.bind(this)
+						}
+					]
 				},
-				{$subview: ContactView}
+				{
+					$subview: true
+				}
 			]
 		};
 	}
@@ -39,11 +52,19 @@ export default class ContactsView extends JetView {
 	urlChange(view, url) {
 		contacts.waitData.then(() => {
 			const list = this.$$(LIST_ID);
-			const id = contacts.exists(url[0].params.id) ? url[0].params.id : contacts.getFirstId();
-			if (id) {
-				list.select(id);
+			const lastView = url[url.length - 1].page;
+			const contactId = url[url.length - 1].params.contact_id;
+			const selectedId = list.getSelectedId();
+			if (!selectedId && list.getVisibleCount() > 0) {
+				list.select(list.getFirstId());
 			}
-			else {
+			if (contactId && contactId !== selectedId) {
+				list.select(contactId);
+			}
+			if (lastView === "contacts") {
+				this.show("info");
+			}
+			if (lastView === "add_contact") {
 				list.unselectAll();
 			}
 		});
@@ -57,6 +78,18 @@ export default class ContactsView extends JetView {
 	}
 
 	onAfterListSelect(id) {
-		this.$scope.setParam("id", id, true);
+		const url = this.getUrl();
+		let topView = url[url.length - 1].page;
+		if (topView === "add_contact" && id) {
+			topView = "edit_contact";
+		}
+		if (topView === "contacts") {
+			topView = `info/${topView}`;
+		}
+		this.show(`${topView}?contact_id=${id}`);
+	}
+
+	addContactClick() {
+		this.show("add_contact");
 	}
 }

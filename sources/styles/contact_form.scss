@@ -1,0 +1,20 @@
+@import "colors";
+
+.contact_form {
+	.contact_form &__header {
+		> div {
+			font-size: x-large;
+		}
+	}
+
+	.icons_selector {
+		.webix_icon {
+			vertical-align: text-top;
+		}
+	}
+
+	&__photo {
+		max-width: 100%;
+		max-height: 100%;
+	}
+}

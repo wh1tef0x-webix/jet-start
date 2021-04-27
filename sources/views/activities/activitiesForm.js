@@ -21,7 +21,7 @@ export default class ActivitiesPopup extends JetView {
 						localId: LABEL_ID,
 						view: "label",
 						align: "center",
-						label: _("form_label_add")
+						label: _("activity_form_label_add")
 					},
 					{
 						localId: FORM_ID,
@@ -39,7 +39,7 @@ export default class ActivitiesPopup extends JetView {
 								label: _("activitiestable_type"),
 								validate: webix.rules.isNotEmpty,
 								validateEvent: "key",
-								invalidMessage: _("form_validate_not_empty"),
+								invalidMessage: _("activity_form_validate_not_empty"),
 								options: {
 									data: activityTypes,
 									body: {
@@ -53,7 +53,7 @@ export default class ActivitiesPopup extends JetView {
 								label: _("activitiestable_contact"),
 								validate: webix.rules.isNotEmpty,
 								validateEvent: "key",
-								invalidMessage: _("form_validate_not_empty"),
+								invalidMessage: _("activity_form_validate_not_empty"),
 								options: {
 									data: contacts,
 									body: {
@@ -70,7 +70,7 @@ export default class ActivitiesPopup extends JetView {
 										type: "date",
 										validate: webix.rules.isNotEmpty,
 										validateEvent: "key",
-										invalidMessage: _("form_validate_not_empty"),
+										invalidMessage: _("activity_form_validate_not_empty"),
 										format: webix.Date.dateToStr("%Y-%m-%d"),
 										stringResult: true
 									},
@@ -81,7 +81,7 @@ export default class ActivitiesPopup extends JetView {
 										type: "time",
 										validate: webix.rules.isNotEmpty,
 										validateEvent: "key",
-										invalidMessage: _("form_validate_not_empty"),
+										invalidMessage: _("activity_form_validate_not_empty"),
 										format: webix.Date.dateToStr("%H:%i"),
 										stringResult: true
 									}
@@ -118,9 +118,7 @@ export default class ActivitiesPopup extends JetView {
 								}
 							]
 					}
-
 				]
-
 			}
 		};
 	}
@@ -133,17 +131,28 @@ export default class ActivitiesPopup extends JetView {
 			.hide();
 	}
 
-	showWindow(id = undefined) {
-		if (id) {
+	showWindow({
+		activity,
+		lockedFields
+	} = {}) {
+		if (activity) {
 			const _ = this.app.getService("locale")._;
-			this.$$(LABEL_ID)
-				.setValue(_("form_label_edit"));
-			this.$$(SAVEBTN_ID)
-				.define("label", _("btn_save"));
-			activities.waitData.then(() => {
-				this.$$(FORM_ID)
-					.setValues(activities.getItem(id));
-			});
+			const label = this.$$(LABEL_ID);
+			const saveBtn = this.$$(SAVEBTN_ID);
+			const form = this.$$(FORM_ID);
+			label.setValue(_("activity_form_label_edit"));
+			saveBtn.define("label", _("btn_save"));
+			saveBtn.refresh();
+			form.setValues(activity);
+		}
+		if (lockedFields) {
+			const form = this.$$(FORM_ID);
+			form.setValues(lockedFields, true);
+			Object.keys(lockedFields)
+				.forEach((field) => {
+					form.queryView({name: field})
+						.disable();
+				});
 		}
 		this.getRoot()
 			.show();
