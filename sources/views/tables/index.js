@@ -67,18 +67,7 @@ export default class TableView extends JetView {
 
 	init() {
 		this.on(this.app, "tableview:itemadded", () => {
-			const table = this.$$(TABLE_ID);
-			table.eachColumn((id) => {
-				const filter = table.getFilter(id);
-				if (filter) {
-					if (filter.setValue) {
-						filter.setValue("");
-					}
-					else {
-						filter.value = "";
-					}
-				}
-			});
+			this.resetTableFilters();
 		});
 	}
 
@@ -93,6 +82,22 @@ export default class TableView extends JetView {
 			}
 			this.$$(TABLE_ID)
 				.sync(this._collection);
+			this.resetTableFilters();
+		});
+	}
+
+	resetTableFilters() {
+		const table = this.$$(TABLE_ID);
+		table.eachColumn((id) => {
+			const filter = table.getFilter(id);
+			if (filter) {
+				if (filter.setValue) {
+					filter.setValue("");
+				}
+				else {
+					filter.value = "";
+				}
+			}
 		});
 	}
 }
