@@ -65,6 +65,23 @@ export default class TableView extends JetView {
 		};
 	}
 
+	init() {
+		this.on(this.app, "tableview:itemadded", () => {
+			const table = this.$$(TABLE_ID);
+			table.eachColumn((id) => {
+				const filter = table.getFilter(id);
+				if (filter) {
+					if (filter.setValue) {
+						filter.setValue("");
+					}
+					else {
+						filter.value = "";
+					}
+				}
+			});
+		});
+	}
+
 	urlChange() {
 		const contactId = this.getParam("contact_id", true);
 		this._collection.waitData.then(() => {

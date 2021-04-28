@@ -5,7 +5,6 @@ import activityTypes from "../../models/activityTypes";
 import contacts from "../../models/contacts";
 import TableView from "../tables";
 import columns from "../tables/tableColumns";
-import ActivitiesPopup from "./activitiesForm";
 import "../../styles/activities.css";
 
 export default class ActivitiesView extends JetView {
@@ -41,21 +40,17 @@ export default class ActivitiesView extends JetView {
 			}));
 	}
 
-	init() {
-		this._popup = this.ui(ActivitiesPopup);
-	}
-
 	onCheck(rowId, colId, state) {
 		activities.updateItem(rowId, {State: state});
 	}
 
 	onEdit(event, id) {
 		const item = activities.getItem(id.row);
-		this._popup.showWindow({activity: item});
+		this.app.callEvent("contactsform:show", [{activity: item}]);
 		return false;
 	}
 
 	addClick() {
-		this._popup.showWindow();
+		this.app.callEvent("contactsform:show", []);
 	}
 }

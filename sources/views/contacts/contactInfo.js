@@ -5,7 +5,6 @@ import activities from "../../models/activities";
 import contacts from "../../models/contacts";
 import files from "../../models/files";
 import statuses from "../../models/statuses";
-import ActivitiesPopup from "../activities/activitiesForm";
 import TableView from "../tables";
 import columns from "../tables/tableColumns";
 
@@ -123,10 +122,6 @@ export default class ContactInfo extends JetView {
 		};
 	}
 
-	init() {
-		this._popup = this.ui(ActivitiesPopup);
-	}
-
 	urlChange() {
 		const contactId = contacts.exists(this.getParam("contact_id", true))
 			? this.getParam("contact_id", true)
@@ -151,10 +146,10 @@ export default class ContactInfo extends JetView {
 	onEditClick(event, id) {
 		const contactId = this.getParam("contact_id", true);
 		const item = activities.getItem(id.row);
-		this._popup.showWindow({
+		this.app.callEvent("contactsform:show", [{
 			activity: item,
 			lockedFields: {ContactID: contactId}
-		});
+		}]);
 		return false;
 	}
 
@@ -176,7 +171,7 @@ export default class ContactInfo extends JetView {
 
 	addContactActivity() {
 		const contactId = this.getParam("contact_id", true);
-		this._popup.showWindow({lockedFields: {ContactID: contactId}});
+		this.app.callEvent("contactsform:show", [{lockedFields: {ContactID: contactId}}]);
 	}
 
 	onAfterFileAdd(file) {
