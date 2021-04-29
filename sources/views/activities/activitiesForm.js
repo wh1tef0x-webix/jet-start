@@ -168,7 +168,7 @@ export default class ActivitiesPopup extends JetView {
 			else {
 				activities.add(values);
 			}
-			this.app.callEvent("tableview:itemadded", []);
+			this.app.callEvent("tableview:itemschanged", []);
 			this.hideWindow();
 		}
 	}

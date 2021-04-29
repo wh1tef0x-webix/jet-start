@@ -164,6 +164,7 @@ export default class ContactInfo extends JetView {
 			})
 				.then(() => {
 					collection.remove(id.row);
+					this.app.callEvent("tableview:itemschanged", []);
 				});
 			return false;
 		};
