@@ -82,6 +82,7 @@ export default class TableView extends JetView {
 			}
 			this.$$(TABLE_ID)
 				.sync(this._collection);
+			this.resetTableFilters();
 		});
 	}
 
