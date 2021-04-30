@@ -23,8 +23,7 @@ export default class ContactInfo extends JetView {
 			view: "form",
 			css: "contact_form",
 			elementsConfig: {
-				labelWidth,
-				margin
+				labelWidth
 			},
 			elements: [
 				{
@@ -34,8 +33,10 @@ export default class ContactInfo extends JetView {
 					css: "contact_form__header"
 				},
 				{
+					margin,
 					cols: [
 						{
+							margin,
 							rows: [
 								{
 									name: "FirstName",
@@ -97,6 +98,7 @@ export default class ContactInfo extends JetView {
 							]
 						},
 						{
+							margin,
 							rows: [
 								{
 									name: "Email",
@@ -235,10 +237,12 @@ export default class ContactInfo extends JetView {
 			}
 			else {
 				contacts.waitSave(() => {
-					contactId = contacts.add(values);
-					webix.message(_("contact_form_add_message"));
-					this.show(`info?contact_id=${contactId}`);
-				});
+					contacts.add(values);
+				})
+					.then((contact) => {
+						webix.message(_("contact_form_add_message"));
+						this.show(`info?contact_id=${contact.id}`);
+					});
 			}
 		}
 	}
