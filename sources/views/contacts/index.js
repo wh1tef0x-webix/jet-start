@@ -49,25 +49,29 @@ export default class ContactsView extends JetView {
 			.sync(contacts);
 	}
 
-	urlChange(view, url) {
+	urlChange() {
 		contacts.waitData.then(() => {
 			const list = this.$$(LIST_ID);
-			const lastView = url[url.length - 1].page;
-			const contactId = url[url.length - 1].params.contact_id;
+			const subView = this.getSubView();
 			const selectedId = list.getSelectedId();
-			if (!selectedId && list.getVisibleCount() > 0) {
+			const contactId = subView ? subView.getParam("contact_id", true) : null;
+			if (!subView && !selectedId && list.getVisibleCount() > 0 && list.getFirstId()) {
 				list.select(list.getFirstId());
 			}
 			if (contactId && contactId !== selectedId) {
 				list.select(contactId);
 			}
-			if (lastView === "contacts") {
-				this.show("info");
-			}
-			if (lastView === "add_contact") {
-				list.unselectAll();
-			}
 		});
+	}
+
+	onAfterListSelect(id) {
+		const subView = this.getSubView();
+		if (subView) {
+			subView.setParam("contact_id", id, true);
+		}
+		else {
+			this.show("info");
+		}
 	}
 
 	listTemplate(obj) {
@@ -77,19 +81,9 @@ export default class ContactsView extends JetView {
 	        </div>`;
 	}
 
-	onAfterListSelect(id) {
-		const url = this.getUrl();
-		let topView = url[url.length - 1].page;
-		if (topView === "add_contact" && id) {
-			topView = "edit_contact";
-		}
-		if (topView === "contacts") {
-			topView = `info/${topView}`;
-		}
-		this.show(`${topView}?contact_id=${id}`);
-	}
-
 	addContactClick() {
-		this.show("add_contact");
+		this.$$(LIST_ID)
+			.unselectAll();
+		this.show("editor");
 	}
 }

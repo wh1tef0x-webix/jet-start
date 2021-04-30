@@ -123,9 +123,7 @@ export default class ContactInfo extends JetView {
 	}
 
 	urlChange() {
-		const contactId = contacts.exists(this.getParam("contact_id", true))
-			? this.getParam("contact_id", true)
-			: contacts.getFirstId();
+		const contactId = this.getParam("contact_id", true) || contacts.getFirstId();
 		this.setParam("contact_id", contactId, true);
 		webix.promise.all([contacts.waitData, statuses.waitData])
 			.then(() => {
@@ -133,9 +131,7 @@ export default class ContactInfo extends JetView {
 				this.$$(NAME_ID)
 					.setValue(`${contact.FirstName} ${contact.LastName}`);
 				this.$$(TEMPLATE_ID)
-					.define("template", this.getTemplate(contact));
-				this.$$(TEMPLATE_ID)
-					.refresh();
+					.setHTML(this.getTemplate(contact));
 			});
 	}
 
@@ -283,7 +279,7 @@ export default class ContactInfo extends JetView {
 
 	editContactClick() {
 		const contactId = this.getParam("contact_id", true);
-		this.show(`edit_contact?contact_id=${contactId}`);
+		this.show(`editor?contact_id=${contactId}`);
 	}
 }
 

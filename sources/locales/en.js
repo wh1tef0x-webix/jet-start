@@ -6,8 +6,7 @@ export default {
 	menu_activities: "Activities",
 	menu_settings: "Settings",
 	menu_info: "Contact info",
-	menu_add_contact: "Add contact",
-	menu_edit_contact: "Edit contact",
+	menu_editor: "Contacts management",
 
 	btn_add: "Add",
 	btn_add_contact: "Add contact",

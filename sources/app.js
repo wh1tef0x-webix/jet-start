@@ -14,8 +14,7 @@ export default class App extends JetApp {
 			views: {
 				contacts: "contacts.index",
 				info: "contacts.contactInfo",
-				edit_contact: "contacts.contactEditor",
-				add_contact: "contacts.contactEditor",
+				editor: "contacts.contactEditor",
 				activities: "activities.index"
 			}
 		};

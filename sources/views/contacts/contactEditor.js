@@ -22,6 +22,10 @@ export default class ContactInfo extends JetView {
 			localId: FORM_ID,
 			view: "form",
 			css: "contact_form",
+			elementsConfig: {
+				labelWidth,
+				margin
+			},
 			elements: [
 				{
 					localId: LABEL_ID,
@@ -30,13 +34,10 @@ export default class ContactInfo extends JetView {
 					css: "contact_form__header"
 				},
 				{
-					margin,
 					cols: [
 						{
-							margin,
 							rows: [
 								{
-									labelWidth,
 									name: "FirstName",
 									label: _("contact_form_label_first_name"),
 									view: "text",
@@ -45,7 +46,6 @@ export default class ContactInfo extends JetView {
 									invalidMessage: _("activity_form_validate_not_empty")
 								},
 								{
-									labelWidth,
 									name: "LastName",
 									label: _("contact_form_label_last_name"),
 									view: "text",
@@ -54,49 +54,42 @@ export default class ContactInfo extends JetView {
 									invalidMessage: _("activity_form_validate_not_empty")
 								},
 								{
-									labelWidth,
 									name: "StartDate",
 									label: _("contact_form_label_joining_date"),
 									view: "datepicker",
 									format: dateFormat
 								},
 								{
-									labelWidth,
 									name: "StatusID",
 									label: _("contact_form_label_status"),
 									view: "richselect",
 									css: "icons_selector",
 									validate: webix.rules.isNotEmpty,
-									validateEvent: "key",
 									invalidMessage: _("activity_form_validate_not_empty"),
 									options: {
-										template: "<span class='span_centered'><span class='webix_icon mdi mdi-#Icon#'></span>#Value#</span>",
+										template: "<span class='span_centered'><span class='webix_icon wxi-#Icon#'></span>#Value#</span>",
 										body: {
 											data: statuses,
-											template: "<span class='span_centered'><span class='webix_icon mdi mdi-#Icon#'></span>#Value#</span>"
+											template: "<span class='span_centered'><span class='webix_icon wxi-#Icon#'></span>#Value#</span>"
 										}
 									}
 								},
 								{
-									labelWidth,
 									name: "Job",
 									label: _("contact_form_label_job"),
 									view: "text"
 								},
 								{
-									labelWidth,
 									name: "Company",
 									label: _("contact_form_label_company"),
 									view: "text"
 								},
 								{
-									labelWidth,
 									name: "Website",
 									label: _("contact_form_label_website"),
 									view: "text"
 								},
 								{
-									labelWidth,
 									name: "Address",
 									label: _("contact_form_label_address"),
 									view: "text"
@@ -104,28 +97,23 @@ export default class ContactInfo extends JetView {
 							]
 						},
 						{
-							margin,
 							rows: [
 								{
-									labelWidth,
 									name: "Email",
 									label: _("contact_form_label_email"),
 									view: "text"
 								},
 								{
-									labelWidth,
 									name: "Skype",
 									label: _("contact_form_label_skype"),
 									view: "text"
 								},
 								{
-									labelWidth,
 									name: "Phone",
 									label: _("contact_form_label_phone"),
 									view: "text"
 								},
 								{
-									labelWidth,
 									name: "Birthday",
 									label: _("contact_form_label_birthday"),
 									view: "datepicker",
@@ -225,8 +213,7 @@ export default class ContactInfo extends JetView {
 			const contactForm = this.$$(FORM_ID);
 			const contactPhoto = this.$$(PHOTO_TEMPLATE_ID);
 			contactForm.setValues({Photo: base64}, true);
-			contactPhoto.define("template", `<img class="contact_form__photo" alt="Contact photo" src="${base64}">`);
-			contactPhoto.refresh();
+			contactPhoto.setHTML(`<img class="contact_form__photo" alt="Contact photo" src="${base64}">`);
 		}, false);
 
 		if (file) {
@@ -244,13 +231,15 @@ export default class ContactInfo extends JetView {
 			if (contactId) {
 				contacts.updateItem(contactId, values);
 				webix.message(_("contact_form_update_message"));
+				this.show(`info?contact_id=${contactId}`);
 			}
 			else {
-				contactId = contacts.add(values);
-				webix.message(_("contact_form_add_message"));
-				this.setParam("id", contactId);
+				contacts.waitSave(() => {
+					contactId = contacts.add(values);
+					webix.message(_("contact_form_add_message"));
+					this.show(`info?contact_id=${contactId}`);
+				});
 			}
-			this.show("../info");
 		}
 	}
 
