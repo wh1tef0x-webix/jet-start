@@ -218,7 +218,7 @@ export default class ContactInfo extends JetView {
                                 ${company}
                              </div>`;
 		const secondColumn = `<div class="contact_info__column">
-                                ${birthday}
+                                ${birthday.replace(/\d\d:\d\d/, "")}
                                 ${address}
                              </div>`;
 		return {
