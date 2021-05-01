@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
-import {EmptyRouter, JetApp, plugins} from "webix-jet";
+import {EmptyRouter, HashRouter, JetApp, plugins} from "webix-jet";
 import "./styles/main.css";
 
 export default class App extends JetApp {
@@ -8,7 +8,7 @@ export default class App extends JetApp {
 		const defaults = {
 			id: APPNAME,
 			version: VERSION,
-			router: EmptyRouter,
+			router: BUILD_AS_MODULE ? EmptyRouter : HashRouter,
 			debug: !PRODUCTION,
 			start: "/top/contacts",
 			views: {

@@ -241,19 +241,22 @@ export default class ContactInfo extends JetView {
 				})
 					.then((contact) => {
 						webix.message(_("contact_form_add_message"));
-						this.setParam("contact_id", contact.id, true);
-						this.show(`../../contacts?contact_id=${contact.id}/info`);
+						this.app.callEvent("contacts:changeurl", [{
+							contactId: contact.id,
+							subView: "info"
+						}]);
 					});
 			}
 		}
 	}
 
 	cancelClick() {
-		const contactId = this.getParam("contact_id", true);
-		const nextUrl = contactId ? "info" : `../../contacts?contact_id=${contacts.getFirstId()}/info`;
 		this.$$(FORM_ID)
 			.clear();
-		this.show(nextUrl);
+		this.app.callEvent("contacts:changeurl", [{
+			contactId: this.getParam("contact_id", true) || contacts.getFirstId(),
+			subView: "info"
+		}]);
 	}
 
 	clearPhotoClick() {

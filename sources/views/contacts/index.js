@@ -47,6 +47,10 @@ export default class ContactsView extends JetView {
 	init() {
 		this.$$(LIST_ID)
 			.sync(contacts);
+		this.on(this.app, "contacts:changeurl", (props) => {
+			this.setParam("contact_id", props.contactId, true);
+			this.show(props.subView || "");
+		});
 	}
 
 	urlChange() {
