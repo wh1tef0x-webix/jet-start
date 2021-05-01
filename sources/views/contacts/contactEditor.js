@@ -233,7 +233,7 @@ export default class ContactInfo extends JetView {
 			if (contactId) {
 				contacts.updateItem(contactId, values);
 				webix.message(_("contact_form_update_message"));
-				this.show(`info?contact_id=${contactId}`);
+				this.show("info");
 			}
 			else {
 				contacts.waitSave(() => {
@@ -241,7 +241,8 @@ export default class ContactInfo extends JetView {
 				})
 					.then((contact) => {
 						webix.message(_("contact_form_add_message"));
-						this.show(`info?contact_id=${contact.id}`);
+						this.setParam("contact_id", contact.id, true);
+						this.show(`../../contacts?contact_id=${contact.id}/info`);
 					});
 			}
 		}
@@ -249,10 +250,10 @@ export default class ContactInfo extends JetView {
 
 	cancelClick() {
 		const contactId = this.getParam("contact_id", true);
-		const nextPage = contactId ? `info?contact_id=${contactId}` : "info";
+		const nextUrl = contactId ? "info" : `../../contacts?contact_id=${contacts.getFirstId()}/info`;
 		this.$$(FORM_ID)
 			.clear();
-		this.show(nextPage);
+		this.show(nextUrl);
 	}
 
 	clearPhotoClick() {

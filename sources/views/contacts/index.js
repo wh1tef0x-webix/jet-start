@@ -52,10 +52,9 @@ export default class ContactsView extends JetView {
 	urlChange() {
 		contacts.waitData.then(() => {
 			const list = this.$$(LIST_ID);
-			const subView = this.getSubView();
 			const selectedId = list.getSelectedId();
-			const contactId = subView ? subView.getParam("contact_id", true) : null;
-			if (!subView && !selectedId && list.getVisibleCount() > 0 && list.getFirstId()) {
+			const contactId = this.getParam("contact_id", true);
+			if (!this.getSubView() && !selectedId && list.getVisibleCount() > 0 && list.getFirstId()) {
 				list.select(list.getFirstId());
 			}
 			if (contactId && contactId !== selectedId) {
@@ -65,11 +64,8 @@ export default class ContactsView extends JetView {
 	}
 
 	onAfterListSelect(id) {
-		const subView = this.getSubView();
-		if (subView) {
-			subView.setParam("contact_id", id, true);
-		}
-		else {
+		this.setParam("contact_id", id, true);
+		if (!this.getSubView()) {
 			this.show("info");
 		}
 	}
@@ -84,6 +80,6 @@ export default class ContactsView extends JetView {
 	addContactClick() {
 		this.$$(LIST_ID)
 			.unselectAll();
-		this.show("editor");
+		this.show("../contacts/editor");
 	}
 }
