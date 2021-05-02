@@ -52,18 +52,15 @@ export default class ContactsView extends JetView {
 			this.setParam("contact_id", props.contactId, true);
 			this.show(props.subView || "");
 		});
-		this.on(this.app, "contacts:subviewinit", (props) => {
-			this._subView = props.subviewActive;
-		});
 	}
 
 	urlChange() {
 		contacts.waitData.then(() => {
 			const list = this.$$(LIST_ID);
-			const subView = this._subView;
 			const selectedId = list.getSelectedId();
 			const contactId = this.getParam("contact_id", true);
-			if (!subView) {
+			const url = this.getUrl();
+			if (url[url.length - 1].page === "contacts") {
 				this.show("info");
 				if (!selectedId) {
 					list.select(contactId || contacts.getFirstId());
