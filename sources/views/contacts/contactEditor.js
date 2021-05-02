@@ -12,7 +12,6 @@ const ADDBTN_ID = "contacteditor:addbtn";
 
 export default class ContactInfo extends JetView {
 	config() {
-		this.app.callEvent("contacts:subviewinit", [{subviewActive: true}]);
 		const _ = this.app.getService("locale")._;
 		const edit = !!this.getParam("contact_id", true);
 		const dateFormat = webix.Date.dateToStr("%d %M %Y");
