@@ -13,6 +13,8 @@ export default class App extends JetApp {
 			start: "/top/contacts",
 			views: {
 				contacts: "contacts.index",
+				info: "contacts.contactInfo",
+				editor: "contacts.contactEditor",
 				activities: "activities.index"
 			}
 		};

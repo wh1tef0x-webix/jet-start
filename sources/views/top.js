@@ -1,5 +1,6 @@
 import {JetView, plugins} from "webix-jet";
 
+import ActivitiesPopup from "./activities/activitiesForm";
 import header from "./header";
 
 export default class TopView extends JetView {
@@ -55,5 +56,7 @@ export default class TopView extends JetView {
 
 	init() {
 		this.use(plugins.Menu, "top:menu");
+		this._popup = this.ui(ActivitiesPopup);
+		this.on(this.app, "contactsform:show", props => this._popup.showWindow(props));
 	}
 }

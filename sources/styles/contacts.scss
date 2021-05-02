@@ -46,6 +46,7 @@
 		&__column {
 			display: flex;
 			flex-direction: column;
+			min-width: 25%;
 
 			&.image_column {
 				align-items: center;

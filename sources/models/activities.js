@@ -1,6 +1,5 @@
 const dateToStrParser = webix.Date.dateToStr("%Y-%m-%d");
 const timeToStrParser = webix.Date.dateToStr("%H:%i");
-
 const strToDateParser = webix.Date.strToDate("%Y-%m-%d");
 const strToTimeParser = webix.Date.strToDate("%H:%i");
 

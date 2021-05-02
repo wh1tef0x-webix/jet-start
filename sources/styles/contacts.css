@@ -34,6 +34,7 @@
 .contacts .contact_info__column {
   display: flex;
   flex-direction: column;
+  min-width: 25%;
 }
 .contacts .contact_info__column.image_column {
   align-items: center;
