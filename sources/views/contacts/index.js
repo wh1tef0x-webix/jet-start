@@ -60,10 +60,14 @@ export default class ContactsView extends JetView {
 	urlChange() {
 		contacts.waitData.then(() => {
 			const list = this.$$(LIST_ID);
+			const subView = this._subView;
 			const selectedId = list.getSelectedId();
 			const contactId = this.getParam("contact_id", true);
-			if (!this._subView && !list.getSelectedId()) {
-				list.select(contactId || contacts.getFirstId());
+			if (!subView) {
+				this.show("info");
+				if (!selectedId) {
+					list.select(contactId || contacts.getFirstId());
+				}
 			}
 			if (contactId && contactId !== selectedId) {
 				list.select(contactId);
@@ -73,9 +77,6 @@ export default class ContactsView extends JetView {
 
 	onAfterListSelect(id) {
 		this.setParam("contact_id", id, true);
-		if (!this._subView) {
-			this.show("info");
-		}
 	}
 
 	listTemplate(obj) {

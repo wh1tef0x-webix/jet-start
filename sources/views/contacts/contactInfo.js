@@ -124,15 +124,17 @@ export default class ContactInfo extends JetView {
 	}
 
 	urlChange() {
-		const contactId = this.getParam("contact_id", true) || contacts.getFirstId();
-		webix.promise.all([contacts.waitData, statuses.waitData])
-			.then(() => {
-				const contact = contacts.getItem(contactId);
-				this.$$(NAME_ID)
-					.setValue(`${contact.FirstName} ${contact.LastName}`);
-				this.$$(TEMPLATE_ID)
-					.setHTML(this.getTemplate(contact));
-			});
+		const contactId = this.getParam("contact_id", true);
+		if (contactId) {
+			webix.promise.all([contacts.waitData, statuses.waitData])
+				.then(() => {
+					const contact = contacts.getItem(contactId);
+					this.$$(NAME_ID)
+						.setValue(`${contact.FirstName} ${contact.LastName}`);
+					this.$$(TEMPLATE_ID)
+						.setHTML(this.getTemplate(contact));
+				});
+		}
 	}
 
 	onCheck(rowId, colId, state) {
