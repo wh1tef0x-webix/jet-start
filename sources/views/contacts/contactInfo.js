@@ -13,6 +13,7 @@ const NAME_ID = "contactinfo:fullname";
 
 export default class ContactInfo extends JetView {
 	config() {
+		this.app.callEvent("contacts:subviewinit", [{subviewActive: true}]);
 		const _ = this.app.getService("locale")._;
 		return {
 			rows: [

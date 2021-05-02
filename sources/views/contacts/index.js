@@ -9,6 +9,7 @@ const LIST_ID = "contacts:list";
 export default class ContactsView extends JetView {
 	config() {
 		const _ = this.app.getService("locale")._;
+		this._subView = false;
 		return {
 			css: "contacts",
 			cols: [
@@ -51,6 +52,9 @@ export default class ContactsView extends JetView {
 			this.setParam("contact_id", props.contactId, true);
 			this.show(props.subView || "");
 		});
+		this.on(this.app, "contacts:subviewinit", (props) => {
+			this._subView = props.subviewActive;
+		});
 	}
 
 	urlChange() {
@@ -58,8 +62,8 @@ export default class ContactsView extends JetView {
 			const list = this.$$(LIST_ID);
 			const selectedId = list.getSelectedId();
 			const contactId = this.getParam("contact_id", true);
-			if (!this.getSubView() && !selectedId && list.getVisibleCount() > 0 && list.getFirstId()) {
-				list.select(list.getFirstId());
+			if (!this._subView && !list.getSelectedId()) {
+				list.select(contactId || contacts.getFirstId());
 			}
 			if (contactId && contactId !== selectedId) {
 				list.select(contactId);
@@ -69,7 +73,7 @@ export default class ContactsView extends JetView {
 
 	onAfterListSelect(id) {
 		this.setParam("contact_id", id, true);
-		if (!this.getSubView()) {
+		if (!this._subView) {
 			this.show("info");
 		}
 	}
