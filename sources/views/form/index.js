@@ -41,7 +41,7 @@ export default class FormPopup extends JetView {
 									view: "button",
 									label: _("btn_add"),
 									css: "webix_primary",
-									click: this._saveClick && this._saveClick.bind(this)
+									click: this._saveClick
 								},
 								{
 									gravity: 0.25,
@@ -66,7 +66,7 @@ export default class FormPopup extends JetView {
 		this._collection = collection;
 		this._fields = fields.map(field => field(_));
 		this._complexData = complexData;
-		this._saveClick = saveClick;
+		this._saveClick = saveClick.bind(this);
 		this.refresh();
 	}
 
