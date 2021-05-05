@@ -58,7 +58,15 @@ const contactsDueDateColumn = _ => ({
 		}
 	],
 	fillspace: 1,
-	sort: "string",
+	sort: (firstVal, secondVal) => {
+		if (firstVal.DueDate.timestamp > secondVal.DueDate.timestamp) {
+			return 1;
+		}
+		if (firstVal.DueDate.timestamp < secondVal.DueDate.timestamp) {
+			return -1;
+		}
+		return 0;
+	},
 	format: obj => webix.Date.dateToStr("%d %M %Y")(obj.date)
 });
 

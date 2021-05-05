@@ -11,6 +11,8 @@ import columns from "../table/tableColumns";
 
 const TEMPLATE_ID = "contactinfo:template";
 const NAME_ID = "contactinfo:fullname";
+const ACTIVITIES_TABLE = "table:contact:activities";
+const FILES_TABLE = "table:contact:statuses";
 
 export default class ContactInfo extends JetView {
 	config() {
@@ -61,8 +63,7 @@ export default class ContactInfo extends JetView {
 							body: {
 								rows: [
 									{
-										$subview: new TableView({
-											app: this.app,
+										$subview: new TableView(this.app, ACTIVITIES_TABLE, {
 											collection: activities,
 											columns: columns(["State", "TypeID", "DueDate", "Details"]),
 											collectionFilter: this.collectionFilter,
@@ -91,8 +92,7 @@ export default class ContactInfo extends JetView {
 							body: {
 								rows: [
 									{
-										$subview: new TableView({
-											app: this.app,
+										$subview: new TableView(this.app, FILES_TABLE, {
 											collection: files,
 											columns: columns(["Name", "ChangeDate", "Size"]),
 											collectionFilter: this.collectionFilter,

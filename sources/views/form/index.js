@@ -5,6 +5,20 @@ const FORM_ID = "formview:form";
 const SAVEBTN_ID = "formview:savebtn";
 
 export default class FormPopup extends JetView {
+	constructor(app, name, {
+		collection,
+		fields,
+		complexData = false,
+		saveClick = null
+	}) {
+		super(app, name);
+		const _ = this.app.getService("locale")._;
+		this._collection = collection;
+		this._fields = fields.map(field => field(_));
+		this._complexData = complexData;
+		this._saveClick = saveClick.bind(this);
+	}
+
 	config() {
 		const _ = this.app.getService("locale")._;
 		this._formId = FORM_ID;
@@ -54,20 +68,6 @@ export default class FormPopup extends JetView {
 				]
 			}
 		};
-	}
-
-	initParam({
-		collection,
-		fields,
-		complexData = false,
-		saveClick = null
-	}) {
-		const _ = this.app.getService("locale")._;
-		this._collection = collection;
-		this._fields = fields.map(field => field(_));
-		this._complexData = complexData;
-		this._saveClick = saveClick.bind(this);
-		this.refresh();
 	}
 
 	onHide() {

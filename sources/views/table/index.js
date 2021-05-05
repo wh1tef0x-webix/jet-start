@@ -3,8 +3,7 @@ import {JetView} from "webix-jet";
 const TABLE_ID = "tableview:table";
 
 export default class TableView extends JetView {
-	constructor({
-		app,
+	constructor(app, name, {
 		collection,
 		columns,
 		collectionFilter = null,
@@ -12,7 +11,7 @@ export default class TableView extends JetView {
 		onDelete = null,
 		onCheck = null
 	}) {
-		super(app, "");
+		super(app, name);
 		this._collection = collection;
 		this._columns = columns;
 		this._collectionFilter = collectionFilter;

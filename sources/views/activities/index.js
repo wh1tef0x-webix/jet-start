@@ -9,8 +9,9 @@ import columns from "../table/tableColumns";
 
 import "../../styles/activities.css";
 
-const VIEW_ID = "activitied:view";
+const VIEW_ID = "activities:view";
 const TABBAR_ID = "activities:tabbar";
+const TABLE_ID = "activities:table";
 const FILTER_ALL = "filterAll";
 const FILTER_OVERDUE = "filterOverdue";
 const FILTER_COMPLETED = "filterCompleted";
@@ -82,8 +83,7 @@ export default class ActivitiesView extends JetView {
 							}
 						]
 					},
-					new TableView({
-						app: this.app,
+					new TableView(this.app, TABLE_ID, {
 						collection: activities,
 						columns: columns(["State", "TypeID", "DueDate", "Details", "ContactID"]),
 						onCheck: this.onCheck,

@@ -10,6 +10,10 @@ import columns from "../table/tableColumns";
 
 
 const LANGUAGE_ID = "settings:lang";
+const STATUSES_TABLE = "table:statuses";
+const ACTIVITY_TYPES_TABLE = "table:activity_types";
+const STATUSES_FORM = "form:statuses";
+const ACTIVITY_TYPES_FORM = "form:activity_types";
 
 export default class SettingsView extends JetView {
 	config() {
@@ -55,8 +59,7 @@ export default class SettingsView extends JetView {
 					]
 				},
 				{
-					$subview: new TableView({
-						app: this.app,
+					$subview: new TableView(this.app, ACTIVITY_TYPES_TABLE, {
 						collection: activityTypes,
 						columns: columns(["id", "Value", "Icon"]),
 						onDelete: this.onDelete("confirm_message_activity_type"),
@@ -80,8 +83,7 @@ export default class SettingsView extends JetView {
 					]
 				},
 				{
-					$subview: new TableView({
-						app: this.app,
+					$subview: new TableView(this.app, STATUSES_TABLE, {
 						collection: statuses,
 						columns: columns(["id", "Value", "Icon"]),
 						onDelete: this.onDelete("confirm_message_status"),
@@ -94,20 +96,18 @@ export default class SettingsView extends JetView {
 	}
 
 	init() {
-		this._statusesPopup = this.ui(FormPopup);
-		this._activityTypesPopup = this.ui(FormPopup);
-		this._statusesPopup.initParam({
+		this._statusesPopup = this.ui(new FormPopup(this.app, STATUSES_FORM, {
 			collection: statuses,
 			fields: fields(["Value", "Icon"]),
 			saveClick: this.saveClick
-		});
-		this._activityTypesPopup.initParam({
+		}));
+		this._activityTypesPopup = this.ui(new FormPopup(this.app, ACTIVITY_TYPES_FORM, {
 			collection: activityTypes,
 			fields: fields(["Value", "Icon"]),
 			saveClick: this.saveClick
-		});
-		this.on(this.app, "form:statuses:show", props => this._statusesPopup.showWindow(props));
-		this.on(this.app, "form:activity_types:show", props => this._activityTypesPopup.showWindow(props));
+		}));
+		this.on(this.app, `${STATUSES_FORM}:show`, props => this._statusesPopup.showWindow(props));
+		this.on(this.app, `${ACTIVITY_TYPES_FORM}:show`, props => this._activityTypesPopup.showWindow(props));
 	}
 
 	saveClick() {

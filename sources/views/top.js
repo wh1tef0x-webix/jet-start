@@ -5,12 +5,17 @@ import FormPopup from "./form";
 import fields from "./form/formFields";
 import HeaderView from "./header";
 
+const MENU_ID = "top:menu";
+const MENU_CONTACTS_ID = "contacts";
+const MENU_ACTIVITIES_ID = "activities";
+const MENU_SETTINGS_ID = "settings";
+
 export default class TopView extends JetView {
 	config() {
 		const _ = this.app.getService("locale")._;
 		const menu = {
 			view: "menu",
-			id: "top:menu",
+			id: MENU_ID,
 			css: "menu",
 			width: 180,
 			layout: "y",
@@ -19,17 +24,17 @@ export default class TopView extends JetView {
 			data: [
 				{
 					value: _("menu_contacts"),
-					id: "contacts",
+					id: MENU_CONTACTS_ID,
 					icon: "user"
 				},
 				{
 					value: _("menu_activities"),
-					id: "activities",
+					id: MENU_ACTIVITIES_ID,
 					icon: "calendar"
 				},
 				{
 					value: _("menu_settings"),
-					id: "settings",
+					id: MENU_SETTINGS_ID,
 					icon: "dots"
 				}
 			]
@@ -58,13 +63,12 @@ export default class TopView extends JetView {
 
 	init() {
 		this.use(plugins.Menu, "top:menu");
-		this._popup = this.ui(FormPopup);
-		this._popup.initParam({
+		this._popup = this.ui(new FormPopup(this.app, "form:activities", {
 			complexData: true,
 			collection: activities,
 			fields: fields(["Details", "TypeID", "ContactID", "DueDate", "State"]),
 			saveClick: this.saveClick
-		});
+		}));
 		this.on(this.app, "form:activities:show", props => this._popup.showWindow(props));
 	}
 

@@ -11,8 +11,14 @@ const activities = new webix.DataCollection({
 			if (typeof obj.DueDate === "string") {
 				obj.DueDate = {
 					date: dateToStrParser(obj.DueDate),
-					time: timeToStrParser(obj.DueDate)
+					time: timeToStrParser(obj.DueDate),
+					timestamp: strToDateParser(obj.DueDate) / 1000
 				};
+			}
+		},
+		$update: (obj) => {
+			if (typeof obj.DueDate !== "string") {
+				obj.DueDate.timestamp = strToDateParser(obj.DueDate.date) / 1000;
 			}
 		},
 		$save: (obj) => {
