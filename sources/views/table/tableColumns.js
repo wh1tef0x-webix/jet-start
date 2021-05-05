@@ -6,6 +6,13 @@ const DELETED_CONTACT = "activitiestable_contact_deleted";
 
 const dateToStrParser = webix.Date.dateToStr("%d %M %Y");
 
+const idColumn = () => ({
+	id: "id",
+	header: "",
+	adjust: "data",
+	sort: "int"
+});
+
 const contactsStateColumn = () => ({
 	id: "State",
 	header: "",
@@ -18,13 +25,13 @@ const contactsStateColumn = () => ({
 const contactsTypeIDColumn = _ => ({
 	id: "TypeID",
 	header: [
-		_("activitiestable_type"),
+		_("table_type"),
 		{
 			content: "richSelectFilter",
 			inputConfig: {
 				suggest: {
 					body: {
-						template: obj => (obj.id === EMPTY_SELECT ? "" : activityTypes.getItem(obj.id).Value)
+						template: obj => (obj.id === EMPTY_SELECT ? "" : `<span class="webix_icon wxi-${activityTypes.getItem(obj.id).Icon}"></span>${activityTypes.getItem(obj.id).Value}`)
 					}
 				}
 			}
@@ -33,13 +40,13 @@ const contactsTypeIDColumn = _ => ({
 	adjust: "header",
 	sort: "string",
 	collection: activityTypes,
-	template: obj => activityTypes.getItem(obj.TypeID).Value
+	template: obj => `<span class="webix_icon wxi-${activityTypes.getItem(obj.TypeID).Icon}"></span>${activityTypes.getItem(obj.TypeID).Value}`
 });
 
 const contactsDueDateColumn = _ => ({
 	id: "DueDate",
 	header: [
-		_("activitiestable_date"),
+		_("table_date"),
 		{
 			content: "datepickerFilter",
 			compare(cellValue, filterValue) {
@@ -57,7 +64,7 @@ const contactsDueDateColumn = _ => ({
 
 const contactsDetailsColumn = _ => ({
 	id: "Details",
-	header: [_("activitiestable_details"), {content: "textFilter"}],
+	header: [_("table_details"), {content: "textFilter"}],
 	sort: "string",
 	fillspace: 2
 });
@@ -65,7 +72,7 @@ const contactsDetailsColumn = _ => ({
 const contactsContactIDColumn = _ => ({
 	id: "ContactID",
 	header: [
-		_("activitiestable_contact"),
+		_("table_contact"),
 		{
 			content: "richSelectFilter",
 			inputConfig: {
@@ -89,26 +96,44 @@ const contactsContactIDColumn = _ => ({
 
 const filesNameColumn = _ => ({
 	id: "Name",
-	header: _("filestable_name"),
+	header: _("table_filename"),
 	sort: "string",
 	fillspace: 2
 });
 
 const filesChangeDateColumn = _ => ({
 	id: "ChangeDate",
-	header: _("filestable_date"),
+	header: _("table_changedate"),
 	sort: "string",
 	fillspace: 1,
 	format: obj => dateToStrParser(new Date(obj))
 });
+
 const filesSizeColumn = _ => ({
 	id: "Size",
-	header: _("filestable_size"),
+	header: _("table_filesize"),
 	sort: "int"
+});
+
+const valueColumn = _ => ({
+	id: "Value",
+	header: _("table_value"),
+	sort: "string",
+	fillspace: 1
+});
+
+const iconColumn = _ => ({
+	id: "Icon",
+	header: _("table_icon"),
+	sort: "string",
+	template: "<span class='webix_icon wxi-#Icon#'></span> #Icon#",
+	fillspace: 1
 });
 
 const columns = (columnIds = []) => {
 	const colMap = {
+		/* All columns */
+		id: idColumn,
 		/* Contacts columns */
 		State: contactsStateColumn,
 		TypeID: contactsTypeIDColumn,
@@ -118,7 +143,10 @@ const columns = (columnIds = []) => {
 		/* Files columns */
 		Name: filesNameColumn,
 		ChangeDate: filesChangeDateColumn,
-		Size: filesSizeColumn
+		Size: filesSizeColumn,
+		/* Activity type and Status columns */
+		Value: valueColumn,
+		Icon: iconColumn
 	};
 
 	return columnIds.map(id => colMap[id]);

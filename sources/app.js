@@ -1,7 +1,9 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-console */
 import {EmptyRouter, HashRouter, JetApp, plugins} from "webix-jet";
+
 import "./styles/main.css";
+import {errorMessage} from "./views/messages";
 
 export default class App extends JetApp {
 	constructor(config) {
@@ -15,7 +17,8 @@ export default class App extends JetApp {
 				contacts: "contacts.index",
 				info: "contacts.contactInfo",
 				editor: "contacts.contactEditor",
-				activities: "activities.index"
+				activities: "activities.index",
+				settings: "settings.index"
 			}
 		};
 
@@ -23,12 +26,7 @@ export default class App extends JetApp {
 		this.use(plugins.Locale, null);
 		if (!PRODUCTION) {
 			this.attachEvent("app:error:resolve", (err) => {
-				webix.message({
-					text: this.getService("locale")
-						._("error_message"),
-					type: "error",
-					expire: 10000
-				});
+				errorMessage(this.getService("locale")._);
 				console.error(err);
 			});
 		}

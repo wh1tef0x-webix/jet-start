@@ -3,3 +3,4 @@
 /test-server/
 /build/
 webpack.config.js
+index.html

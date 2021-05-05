@@ -44,7 +44,7 @@ export default class ContactInfo extends JetView {
 									view: "text",
 									validate: webix.rules.isNotEmpty,
 									validateEvent: "blur",
-									invalidMessage: _("activity_form_validate_not_empty")
+									invalidMessage: _("form_validate_not_empty")
 								},
 								{
 									name: "LastName",
@@ -52,7 +52,7 @@ export default class ContactInfo extends JetView {
 									view: "text",
 									validate: webix.rules.isNotEmpty,
 									validateEvent: "blur",
-									invalidMessage: _("activity_form_validate_not_empty")
+									invalidMessage: _("form_validate_not_empty")
 								},
 								{
 									name: "StartDate",
@@ -66,7 +66,7 @@ export default class ContactInfo extends JetView {
 									view: "richselect",
 									css: "icons_selector",
 									validate: webix.rules.isNotEmpty,
-									invalidMessage: _("activity_form_validate_not_empty"),
+									invalidMessage: _("form_validate_not_empty"),
 									options: {
 										template: "<span class='span_centered'><span class='webix_icon wxi-#Icon#'></span>#Value#</span>",
 										body: {

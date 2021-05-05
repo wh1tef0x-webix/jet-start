@@ -1,7 +1,9 @@
 import {JetView, plugins} from "webix-jet";
 
-import ActivitiesPopup from "./activities/activitiesForm";
-import header from "./header";
+import activities from "../models/activities";
+import FormPopup from "./form";
+import fields from "./form/formFields";
+import HeaderView from "./header";
 
 export default class TopView extends JetView {
 	config() {
@@ -13,22 +15,22 @@ export default class TopView extends JetView {
 			width: 180,
 			layout: "y",
 			select: true,
-			template: "<span class='webix_icon mdi mdi-#icon#'></span> #value# ",
+			template: "<span class='webix_icon wxi-#icon#'></span> #value# ",
 			data: [
 				{
 					value: _("menu_contacts"),
 					id: "contacts",
-					icon: "account-group"
+					icon: "user"
 				},
 				{
 					value: _("menu_activities"),
 					id: "activities",
-					icon: "calendar-range"
+					icon: "calendar"
 				},
 				{
 					value: _("menu_settings"),
 					id: "settings",
-					icon: "cogs"
+					icon: "dots"
 				}
 			]
 		};
@@ -38,7 +40,7 @@ export default class TopView extends JetView {
 			paddingX: 5,
 			css: "layout",
 			rows: [
-				{$subview: header},
+				HeaderView,
 				{
 					cols: [
 						menu,
@@ -56,7 +58,28 @@ export default class TopView extends JetView {
 
 	init() {
 		this.use(plugins.Menu, "top:menu");
-		this._popup = this.ui(ActivitiesPopup);
-		this.on(this.app, "contactsform:show", props => this._popup.showWindow(props));
+		this._popup = this.ui(FormPopup);
+		this._popup.initParam({
+			complexData: true,
+			collection: activities,
+			fields: fields(["Details", "TypeID", "ContactID", "DueDate", "State"]),
+			saveClick: this.saveClick
+		});
+		this.on(this.app, "form:activities:show", props => this._popup.showWindow(props));
+	}
+
+	saveClick() {
+		const form = this.$$(this._formId);
+		const values = form.getValues();
+		if (form.validate() && form.isDirty()) {
+			if (values.id) {
+				this._collection.updateItem(values.id, values);
+			}
+			else {
+				this._collection.add(values);
+			}
+			this.app.callEvent("tableview:itemschanged", []);
+			this.hideWindow();
+		}
 	}
 }

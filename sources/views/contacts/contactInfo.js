@@ -5,8 +5,9 @@ import activities from "../../models/activities";
 import contacts from "../../models/contacts";
 import files from "../../models/files";
 import statuses from "../../models/statuses";
-import TableView from "../tables";
-import columns from "../tables/tableColumns";
+import {deleteConfirmation} from "../messages";
+import TableView from "../table";
+import columns from "../table/tableColumns";
 
 const TEMPLATE_ID = "contactinfo:template";
 const NAME_ID = "contactinfo:fullname";
@@ -64,10 +65,10 @@ export default class ContactInfo extends JetView {
 											app: this.app,
 											collection: activities,
 											columns: columns(["State", "TypeID", "DueDate", "Details"]),
-											filterCollection: true,
-											onCheck: this.onCheck.bind(this),
-											onEdit: this.onEditClick.bind(this),
-											onDelete: this.onDeleteClick.bind(this)
+											collectionFilter: this.collectionFilter,
+											onCheck: this.onCheck,
+											onEdit: this.onEdit,
+											onDelete: this.onDelete
 										})
 									},
 									{
@@ -77,7 +78,7 @@ export default class ContactInfo extends JetView {
 												gravity: 0.4,
 												view: "button",
 												css: "webix_primary",
-												label: _("activity_form_label_add"),
+												label: _("form_label_add"),
 												click: this.addContactActivity.bind(this)
 											}
 										]
@@ -94,7 +95,8 @@ export default class ContactInfo extends JetView {
 											app: this.app,
 											collection: files,
 											columns: columns(["Name", "ChangeDate", "Size"]),
-											onDelete: this.onDeleteClick.bind(this)
+											collectionFilter: this.collectionFilter,
+											onDelete: this.onDelete
 										})
 									},
 									{
@@ -137,39 +139,37 @@ export default class ContactInfo extends JetView {
 	}
 
 	onCheck(rowId, colId, state) {
-		activities.updateItem(rowId, {State: state});
+		this._collection.updateItem(rowId, {State: state});
 	}
 
-	onEditClick(event, id) {
+	onEdit(event, id) {
 		const contactId = this.getParam("contact_id", true);
-		const item = activities.getItem(id.row);
-		this.app.callEvent("contactsform:show", [{
-			activity: item,
+		const item = this._collection.getItem(id.row);
+		this.app.callEvent("form:activities:show", [{
+			item,
 			lockedFields: {ContactID: contactId}
 		}]);
 		return false;
 	}
 
-	onDeleteClick(collection) {
-		return (event, id) => {
-			const _ = this.app.getService("locale")._;
-			webix.confirm({
-				title: _("confirm_title"),
-				text: _("confirm_message_activity"),
-				ok: _("confirm_ok"),
-				cancel: _("confirm_no")
-			})
-				.then(() => {
-					collection.remove(id.row);
-					this.app.callEvent("tableview:itemschanged", []);
-				});
-			return false;
-		};
+	onDelete(event, id) {
+		const _ = this.app.getService("locale")._;
+		deleteConfirmation(_, "confirm_message_activity")
+			.then(() => {
+				this._collection.remove(id.row);
+				this.app.callEvent("tableview:itemschanged", []);
+			});
+		return false;
+	}
+
+	collectionFilter(obj) {
+		const contactId = this.getParam("contact_id", true);
+		return obj.ContactID.toString() === contactId.toString();
 	}
 
 	addContactActivity() {
 		const contactId = this.getParam("contact_id", true);
-		this.app.callEvent("contactsform:show", [{lockedFields: {ContactID: contactId}}]);
+		this.app.callEvent("form:activities:show", [{lockedFields: {ContactID: contactId}}]);
 	}
 
 	onAfterFileAdd(file) {
