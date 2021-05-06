@@ -3,7 +3,9 @@ import {JetView} from "webix-jet";
 import * as picture from "../../images/blank-avatar.png";
 import contacts from "../../models/contacts";
 import "../../styles/contacts.css";
+import statuses from "../../models/statuses";
 
+const INPUT_ID = "contacts:input";
 const LIST_ID = "contacts:list";
 
 export default class ContactsView extends JetView {
@@ -15,6 +17,14 @@ export default class ContactsView extends JetView {
 				{
 					gravity: 0.4,
 					rows: [
+						{
+							localId: INPUT_ID,
+							view: "text",
+							placeholder: _("contact_filter_placeholder"),
+							on: {
+								onTimedKeyPress: this.listFilter.bind(this)
+							}
+						},
 						{
 							localId: LIST_ID,
 							view: "list",
@@ -69,6 +79,33 @@ export default class ContactsView extends JetView {
 				list.select(contactId);
 			}
 		});
+	}
+
+	listFilter() {
+		const list = this.$$(LIST_ID);
+		const input = this.$$(INPUT_ID)
+			.getValue()
+			.toLowerCase();
+		if (input) {
+			list.filter((obj) => {
+				let filterResult = false;
+				obj.FullName = obj.FirstName && obj.LastName ? `${obj.FirstName} ${obj.LastName}` : null;
+				obj.Status = statuses.exists(obj.StatusID) ? statuses.getItem(obj.StatusID).Value : null;
+				Object.entries(obj)
+					.forEach(([, val]) => {
+						filterResult = val.toString()
+							.toLowerCase()
+							.indexOf(input) !== -1 ? true : filterResult;
+					});
+				return filterResult;
+			});
+		}
+		else {
+			list.filter();
+		}
+		if (!list.getSelectedId()) {
+			list.select(list.getFirstId());
+		}
 	}
 
 	onAfterListSelect(id) {

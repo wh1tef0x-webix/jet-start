@@ -3,24 +3,22 @@ import {JetView} from "webix-jet";
 const TABLE_ID = "tableview:table";
 
 export default class TableView extends JetView {
-	constructor({
-		app,
+	constructor(app, name, {
 		collection,
 		columns,
-		filterCollection = false,
+		collectionFilter = null,
 		onEdit = null,
 		onDelete = null,
 		onCheck = null
 	}) {
-		super(app, "");
+		super(app, name);
 		this._collection = collection;
 		this._columns = columns;
-		this._filterCollection = filterCollection;
+		this._collectionFilter = collectionFilter;
 		this._onDelete = onDelete;
 		this._onCheck = onCheck;
 		this._onEdit = onEdit;
 	}
-
 
 	config() {
 		const _ = this.app.getService("locale")._;
@@ -47,8 +45,8 @@ export default class TableView extends JetView {
 			css: "table_view",
 			scroll: "y",
 			onClick: {
-				...(this._onEdit) && {"wxi-pencil": this._onEdit},
-				...(this._onDelete) && {"wxi-trash": this._onDelete(this._collection)}
+				...(this._onEdit) && {"wxi-pencil": this._onEdit.bind(this)},
+				...(this._onDelete) && {"wxi-trash": this._onDelete.bind(this)}
 			},
 			on: {
 				onAfterRender() {
@@ -59,7 +57,7 @@ export default class TableView extends JetView {
 						this.hideOverlay();
 					}
 				},
-				...(this._onCheck) && {onCheck: this._onCheck}
+				...(this._onCheck) && {onCheck: this._onCheck.bind(this)}
 			},
 			columns: tableColumns
 		};
@@ -67,27 +65,26 @@ export default class TableView extends JetView {
 
 	init() {
 		this.on(this.app, "tableview:itemschanged", () => {
-			this.resetTableFilters();
+			this.reloadTableFilter();
 		});
 	}
 
 	urlChange() {
-		const contactId = this.getParam("contact_id", true);
 		this._collection.waitData.then(() => {
-			if (this._filterCollection) {
-				this._collection.filter(obj => obj.ContactID.toString() === contactId.toString());
+			if (this._collectionFilter) {
+				this._collection.filter(this._collectionFilter.bind(this));
 			}
 			else {
 				this._collection.filter();
 			}
 			this.$$(TABLE_ID)
 				.sync(this._collection);
-			this.resetTableFilters();
+			this.reloadTableFilter();
 		});
 	}
 
-	resetTableFilters() {
-		this.$$(TABLE_ID)
-			.setState({filter: {}});
+	reloadTableFilter() {
+		const table = this.$$(TABLE_ID);
+		table.filterByAll();
 	}
 }
