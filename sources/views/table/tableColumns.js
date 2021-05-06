@@ -58,6 +58,7 @@ const contactsDueDateColumn = _ => ({
 		}
 	],
 	fillspace: 1,
+	format: obj => webix.Date.dateToStr("%d %M %Y")(obj.date),
 	sort: (firstVal, secondVal) => {
 		if (firstVal.DueDate.timestamp > secondVal.DueDate.timestamp) {
 			return 1;
@@ -66,8 +67,7 @@ const contactsDueDateColumn = _ => ({
 			return -1;
 		}
 		return 0;
-	},
-	format: obj => webix.Date.dateToStr("%d %M %Y")(obj.date)
+	}
 });
 
 const contactsDetailsColumn = _ => ({

@@ -89,8 +89,8 @@ export default class ContactsView extends JetView {
 		if (input) {
 			list.filter((obj) => {
 				let filterResult = false;
-				obj.FullName = `${obj.FirstName} ${obj.LastName}`;
-				obj.Status = statuses.getItem(obj.StatusID).Value;
+				obj.FullName = obj.FirstName && obj.LastName ? `${obj.FirstName} ${obj.LastName}` : null;
+				obj.Status = statuses.exists(obj.StatusID) ? statuses.getItem(obj.StatusID).Value : null;
 				Object.entries(obj)
 					.forEach(([, val]) => {
 						filterResult = val.toString()
