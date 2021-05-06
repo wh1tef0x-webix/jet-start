@@ -2,7 +2,7 @@ import activityTypes from "../../models/activityTypes";
 import contacts from "../../models/contacts";
 
 const EMPTY_SELECT = "$webix_empty";
-const DELETED_CONTACT = "activitiestable_contact_deleted";
+const DELETED_ITEM = "table_item_deleted";
 
 const dateToStrParser = webix.Date.dateToStr("%d %M %Y");
 
@@ -40,7 +40,9 @@ const contactsTypeIDColumn = _ => ({
 	adjust: "header",
 	sort: "string",
 	collection: activityTypes,
-	template: obj => `<span class="webix_icon wxi-${activityTypes.getItem(obj.TypeID).Icon}"></span>${activityTypes.getItem(obj.TypeID).Value}`
+	template: obj => (activityTypes.exists(obj.TypeID)
+		? `<span class="webix_icon wxi-${activityTypes.getItem(obj.TypeID).Icon}"></span>${activityTypes.getItem(obj.TypeID).Value}`
+		: `<span class="webix_icon wxi-close"></span>${_(DELETED_ITEM)}`)
 });
 
 const contactsDueDateColumn = _ => ({
@@ -99,7 +101,7 @@ const contactsContactIDColumn = _ => ({
 	collection: contacts,
 	template: obj => (contacts.exists(obj.ContactID)
 		? `${contacts.getItem(obj.ContactID).FirstName} ${contacts.getItem(obj.ContactID).LastName}`
-		: _(DELETED_CONTACT))
+		: _(DELETED_ITEM))
 });
 
 const filesNameColumn = _ => ({
